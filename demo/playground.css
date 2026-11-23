@@ -140,9 +140,7 @@ input[type="range"]::-moz-range-thumb{width:14px; height:14px; border:0; border-
   box-shadow:0 0 0 1px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.05), 0 24px 48px -28px rgba(0,0,0,.25); transition:width .35s cubic-bezier(.22,.8,.24,1)}
 @supports (corner-shape:squircle){.frame{border-radius:32px}}
 .stage-canvas{place-items:start center}
-.frame .site{min-height:600px}
-.frame .h{font-size:clamp(34px, 7.2cqi, 80px)}
-.frame .hero{padding-top:150px}
+.frame .mt-stage{min-height:560px}
 
 .links{display:grid; gap:6px}
 .link-row{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr) 26px; gap:4px; align-items:center}

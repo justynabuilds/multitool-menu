@@ -1,6 +1,5 @@
 import "../src/element/index.ts"
 import type { MultitoolSelectDetail } from "../src/element/index.ts"
-import { wireSite } from "./demo.ts"
 
 /* ---------------- state ---------------- */
 
@@ -98,7 +97,7 @@ const SCHEMA: [string, Ctl[]][] = [
 const panel = document.getElementById("panel")!
 const pv = document.getElementById("pv")!
 const frame = document.getElementById("frame")!
-const menu = wireSite(pv)
+const menu = document.getElementById("menu") as HTMLElementTagNameMap["multitool-menu"]
 const refresh: (() => void)[] = []
 let uid = 0
 

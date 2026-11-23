@@ -1,58 +1,14 @@
-/* The Alder demo site: a bright, quiet first screen so the menu is the one made object on it.
+/* The demo stage: the component alone on a plain white page, like a component preview page.
    Used full-page on / and inside the playground preview. */
-.site, body.alder{
-  --s-ground:#F5F5F4;
-  --s-ink:#141416;
-  --s-grey:#8B8C91;
-  --s-muted:#6E6F74;
-  --s-sans:"Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-}
-*{box-sizing:border-box}
-html:has(body.alder){background:#F5F5F4}
-body.alder{margin:0;background:var(--s-ground);overflow-x:hidden}
-
-.site{position:relative;min-height:100svh;background:var(--s-ground);color:var(--s-ink);font-family:var(--s-sans);font-size:16px;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;isolation:isolate}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;
-  padding:26px max(28px, env(safe-area-inset-right, 0px)) 0 max(36px, env(safe-area-inset-left, 0px));position:relative;z-index:5}
-.site.mirror .nav{flex-direction:row-reverse;padding-left:max(28px, env(safe-area-inset-left, 0px));padding-right:max(36px, env(safe-area-inset-right, 0px))}
-.mark{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;letter-spacing:-.015em;color:var(--s-ink);text-decoration:none}
-.mark i{width:18px;height:18px;border-radius:6px;corner-shape:squircle;background:var(--s-ink);display:block;position:relative}
-.mark i::after{content:"";position:absolute;right:4px;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:#F5F5F3}
-
-.hero{flex:1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px 48px;
-  padding:120px max(36px, env(safe-area-inset-right, 0px)) 44px max(36px, env(safe-area-inset-left, 0px))}
-.hero-copy{display:grid;gap:28px;transition:opacity .3s ease, transform .3s ease}
-.hero-copy.swap{opacity:0;transform:translateY(6px)}
-.eyebrow{font-size:14px;color:var(--s-muted)}
-.h{margin:0;font-weight:400;font-size:clamp(40px,6.4vw,88px);line-height:1;letter-spacing:-.042em;max-width:11.5em;text-wrap:balance}
-.h span{color:var(--s-grey)}
-.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px}
-.cta{box-sizing:border-box;height:48px;padding:0 22px;display:inline-flex;align-items:center;border-radius:16px;corner-shape:squircle;
-  font-size:15px;font-weight:500;color:#F5F5F3;text-decoration:none;
-  background:linear-gradient(180deg,#303036 0%,#17171A 55%,#121214 100%);
-  box-shadow:inset 0 1px 0 rgb(255 255 255 / .2), inset 0 0 0 1px rgb(255 255 255 / .06), 0 0 0 1px #0E0E10,
-    0 1px 1px rgb(16 24 40 / .12), 0 10px 22px -10px rgb(16 24 40 / .55)}
-@supports (corner-shape:squircle){.cta{border-radius:26px}}
-.cta:focus-visible,.link:focus-visible,.mark:focus-visible{outline:2px solid var(--s-ink);outline-offset:3px}
-.link{font-size:15px;font-weight:500;color:var(--s-ink);text-decoration:none}
-.link span{color:var(--s-grey);margin-left:4px}
-.note{display:grid;gap:4px;justify-items:end;text-align:right;font-size:13px;line-height:1.45;color:var(--s-muted)}
-.note b{font-weight:500;color:var(--s-ink);font-size:14px}
-
-.pg-link{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:10;
-  font-size:12.5px;color:var(--s-muted);text-decoration:none;white-space:nowrap}
-.pg-link:hover{color:var(--s-ink)}
-
-/* narrow sites, in the page or in the playground preview */
-@media (max-width:760px){
-  .nav{padding-left:max(22px, env(safe-area-inset-left, 0px));padding-right:max(18px, env(safe-area-inset-right, 0px))}
-  .hero{grid-template-columns:1fr;padding:120px max(22px, env(safe-area-inset-right, 0px)) 56px max(22px, env(safe-area-inset-left, 0px))}
-  .note{justify-items:start;text-align:left}
-}
-@container site (max-width:760px){
-  .nav{padding-left:22px;padding-right:18px}
-  .site.mirror .nav{padding-left:18px;padding-right:22px}
-  .hero{grid-template-columns:1fr;padding:120px 22px 40px}
-  .note{justify-items:start;text-align:left}
-}
-@media (prefers-reduced-motion:reduce){.hero-copy{transition:none}}
+.mt-stage{--s-ground:#FFFFFF;--s-muted:#8A8B90;--s-ink:#141416;
+  position:relative;min-height:100svh;background:var(--s-ground);color:var(--s-ink);
+  font-family:"Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;-webkit-font-smoothing:antialiased}
+/* the button sits up and to the right of centre, so the open fan is centred on the page */
+.mt-stage multitool-menu{position:absolute;right:calc(50% - 150px);top:calc(50% - 150px)}
+.mt-stage.mirror multitool-menu{right:auto;left:calc(50% - 150px)}
+html:has(body.demo){background:#FFFFFF}
+body.demo{margin:0;background:#FFFFFF}
+.pg-link{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);
+  font:13px/1 "Geist", ui-sans-serif, system-ui, sans-serif;color:#8A8B90;text-decoration:none;white-space:nowrap}
+.pg-link:hover{color:#141416}
+.pg-link:focus-visible{outline:2px solid #141416;outline-offset:4px;border-radius:2px}
