@@ -8,14 +8,23 @@
   "module": "./dist/multitool-menu.js",
   "types": "./dist/types/element/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/types/element/index.d.ts", "import": "./dist/multitool-menu.js", "default": "./dist/multitool-menu.iife.js" },
+    ".": {
+      "types": "./dist/types/element/index.d.ts",
+      "import": "./dist/multitool-menu.js",
+      "default": "./dist/multitool-menu.iife.js"
+    },
     "./react": "./src/react/MultitoolMenu.tsx",
     "./core": "./src/core/engine.ts"
   },
-  "files": ["dist", "src", "README.md"],
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite --port 4175",
     "build": "vite build && tsc -p tsconfig.types.json",
+    "build:site": "vite build --config vite.site.config.ts",
     "typecheck": "tsc -p tsconfig.json",
     "test": "node --test \"test/*.test.ts\"",
     "preview": "vite preview"
@@ -28,6 +37,12 @@
     "typescript": "^5.8.0",
     "vite": "^6.3.0"
   },
-  "peerDependencies": { "react": ">=18" },
-  "peerDependenciesMeta": { "react": { "optional": true } }
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
 }
