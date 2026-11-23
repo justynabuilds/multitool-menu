@@ -1,0 +1,33 @@
+{
+  "name": "@justbuilt/multitool-menu",
+  "version": "0.1.0",
+  "description": "Multitool Menu: a nav menu whose links swing out from a rivet on the button and click into place, like blades on a pocket tool. Ships as a web component and a React component on one framework-free engine.",
+  "type": "module",
+  "private": true,
+  "main": "./dist/multitool-menu.js",
+  "module": "./dist/multitool-menu.js",
+  "types": "./dist/types/element/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/types/element/index.d.ts", "import": "./dist/multitool-menu.js", "default": "./dist/multitool-menu.iife.js" },
+    "./react": "./src/react/MultitoolMenu.tsx",
+    "./core": "./src/core/engine.ts"
+  },
+  "files": ["dist", "src", "README.md"],
+  "scripts": {
+    "dev": "vite --port 4175",
+    "build": "vite build && tsc -p tsconfig.types.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.ts\"",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0"
+  },
+  "peerDependencies": { "react": ">=18" },
+  "peerDependenciesMeta": { "react": { "optional": true } }
+}
