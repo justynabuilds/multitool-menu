@@ -2,8 +2,32 @@
   "name": "@justbuilt/multitool-menu",
   "version": "0.1.0",
   "description": "Multitool Menu: a nav menu whose links swing out from a rivet on the button and click into place, like blades on a pocket tool. Ships as a web component and a React component on one framework-free engine.",
-  "type": "module",
   "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "author": "Justyna Dabrowska",
+  "homepage": "https://multitool-menu.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justynabuilds/multitool-menu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/justynabuilds/multitool-menu/issues"
+  },
+  "keywords": [
+    "web-component",
+    "custom-element",
+    "react",
+    "navigation",
+    "menu",
+    "nav",
+    "animation",
+    "ui-component",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  },
+  "type": "module",
   "main": "./dist/multitool-menu.js",
   "module": "./dist/multitool-menu.js",
   "types": "./dist/types/element/index.d.ts",
