@@ -41,15 +41,15 @@ export const styles = /* css */ `
 .plate{position:absolute;display:block;box-sizing:border-box;outline:none;text-decoration:none;color:inherit;
   pointer-events:none;visibility:hidden;-webkit-tap-highlight-color:transparent}
 :host([open]) .plate{pointer-events:auto}
-.face{position:absolute;inset:0;display:flex;align-items:center;box-sizing:border-box;border-radius:999px;
+.face{--shade:calc(1 - var(--tuck, 0));position:absolute;inset:0;display:flex;align-items:center;box-sizing:border-box;border-radius:999px;
   padding:0 20px;color:var(--mt-plate-text);
   font-size:15px;font-weight:500;letter-spacing:-.005em;white-space:nowrap;
   /* pearl: a rim that darkens toward the bottom edge, cool layered shadows that grow as the plate is pulled out */
   border:1px solid transparent;
   background:linear-gradient(180deg, var(--mt-plate-bg) 0%, color-mix(in srgb, var(--mt-plate-bg) 97%, #8090B0) 100%) padding-box,
     linear-gradient(180deg, color-mix(in srgb, var(--mt-plate-bg) 60%, #fff) 0%, var(--mt-rim) 100%) border-box;
-  box-shadow:0 1px 1.5px rgb(var(--mt-shadow) / .07),
-    0 calc(10px + var(--lift, 0) * 6px) calc(26px + var(--lift, 0) * 12px) -12px rgb(var(--mt-shadow) / calc(.26 + var(--lift, 0) * .1))}
+  box-shadow:0 1px 1.5px rgb(var(--mt-shadow) / calc(.07 * var(--shade))),
+    0 calc(10px + var(--lift, 0) * 6px) calc(26px + var(--lift, 0) * 12px) -12px rgb(var(--mt-shadow) / calc((.26 + var(--lift, 0) * .1) * var(--shade)))}
 :host([side="right"]) .face{justify-content:flex-end}
 .plate:focus-visible .face{outline:2px solid var(--mt-focus);outline-offset:2px}
 
@@ -59,7 +59,7 @@ export const styles = /* css */ `
   background:linear-gradient(180deg, color-mix(in srgb, var(--mt-plate-bg) 88%, #fff) 0%, var(--mt-plate-bg) 100%);
   box-shadow:inset 0 1px 0 rgb(255 255 255 / .14), inset 0 0 0 1px rgb(255 255 255 / .06),
     0 0 0 1px color-mix(in srgb, var(--mt-plate-bg) 70%, #000),
-    0 calc(10px + var(--lift, 0) * 6px) calc(24px + var(--lift, 0) * 12px) -12px rgb(var(--mt-shadow) / calc(.5 + var(--lift, 0) * .1))}
+    0 calc(10px + var(--lift, 0) * 6px) calc(24px + var(--lift, 0) * 12px) -12px rgb(var(--mt-shadow) / calc((.5 + var(--lift, 0) * .1) * var(--shade)))}
 
 /* ---------- finish: glass, frosted pieces with hairline edges ---------- */
 :host([finish="glass"]){--mt-button-bg:rgb(255 255 255 / .66);--mt-button-text:#141416;--mt-plate-bg:rgb(255 255 255 / .6);--mt-shadow:16 24 40}
@@ -70,5 +70,5 @@ export const styles = /* css */ `
 :host([finish="glass"]) .face{border:0;background:var(--mt-plate-bg);
   -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
   box-shadow:inset 0 1px 0 rgb(255 255 255 / .85), inset 0 0 0 1px rgb(var(--mt-shadow) / .085),
-    0 calc(6px + var(--lift, 0) * 6px) calc(18px + var(--lift, 0) * 10px) -10px rgb(var(--mt-shadow) / calc(.14 + var(--lift, 0) * .08))}
+    0 calc(6px + var(--lift, 0) * 6px) calc(18px + var(--lift, 0) * 10px) -10px rgb(var(--mt-shadow) / calc((.14 + var(--lift, 0) * .08) * var(--shade)))}
 `

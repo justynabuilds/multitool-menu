@@ -20,7 +20,7 @@ test("opening fans the plates to their angles, 12 degrees apart", () => {
   const e = opened()
   for (let i = 0; i < 5; i++) {
     assert.ok(Math.abs(e.frame(i).angle - (12 + i * 12)) < 1e-3)
-    assert.equal(e.frame(i).opacity, 1)
+    assert.equal(e.frame(i).retract, 0)
   }
 })
 
@@ -103,10 +103,29 @@ test("after a pick the chosen plate folds away last", () => {
   let t = 0
   run(e, 2, () => {
     t += FRAME
-    for (let i = 0; i < 5; i++) if (hiddenAt[i] === undefined && e.frame(i).opacity < 0.01) hiddenAt[i] = t
+    for (let i = 0; i < 5; i++) if (hiddenAt[i] === undefined && e.frame(i).retract > 0.99) hiddenAt[i] = t
   })
   assert.ok(hiddenAt.every((v) => v !== undefined))
   assert.equal(Math.max(...hiddenAt), hiddenAt[0])
+})
+
+test("closing never fades: plates fold home first, then slide into the button", () => {
+  const e = opened()
+  e.setOpen(false)
+  let maxAngleWhenRetracting = 0
+  let minAngle = 0
+  run(e, 2, () => {
+    for (let i = 0; i < 5; i++) {
+      const f = e.frame(i)
+      minAngle = Math.min(minAngle, f.angle)
+      if (f.retract > 0.5) maxAngleWhenRetracting = Math.max(maxAngleWhenRetracting, Math.abs(f.angle))
+    }
+  })
+  assert.ok(maxAngleWhenRetracting < 3, `a plate was still ${maxAngleWhenRetracting.toFixed(1)}° open when half slid in`)
+  // and no plate swings up past the button line on the way home
+  assert.ok(minAngle > -0.01, `a plate swung ${minAngle.toFixed(2)}° above the button line`)
+
+  for (let i = 0; i < 5; i++) assert.equal(e.frame(i).retract, 1)
 })
 
 test("reduced motion jumps straight to the end state", () => {

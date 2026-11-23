@@ -32,6 +32,8 @@ export class Spring {
   }
 }
 
+const OPEN_DAMPING = 19
+
 /** Spring with no overshoot for a given stiffness. */
 const critical = (k: number) => new Spring(0, k, 2 * Math.sqrt(k))
 
@@ -51,7 +53,8 @@ export interface EngineOptions {
 export interface ItemFrame {
   /** Degrees, positive swings the plate down. */
   angle: number
-  opacity: number
+  /** 0 = out, 1 = slid all the way into the button. Plates never fade: they fold home and slide into the handle. */
+  retract: number
   /** 0 to 1, how far the plate is pulled out on hover. */
   lift: number
   /** 0 to 1, how much the label fades while another plate is hovered. */
@@ -59,8 +62,10 @@ export interface ItemFrame {
 }
 
 interface Item {
+  /** true from the close command until the plate is home and starts sliding into the button */
+  folding: boolean
   angle: Spring
-  opacity: Spring
+  retract: Spring
   lift: Spring
   dim: Spring
 }
@@ -79,8 +84,9 @@ export class MultitoolEngine {
     this.o = { startAngle: 12, spread: 12, stagger: 0.055, hoverRelease: 0.09, reducedMotion: false, ...options }
     this.count = options.count
     this.items = Array.from({ length: this.count }, () => ({
-      angle: new Spring(0, 240, 19), // a little underdamped: the click into place
-      opacity: new Spring(0, 520, 46),
+      folding: false,
+      angle: new Spring(0, 240, OPEN_DAMPING),
+      retract: Object.assign(critical(420), { x: 1, t: 1 }), // starts inside the button; no bounce, so it never pokes back out
       lift: critical(320),
       dim: critical(220),
     }))
@@ -107,15 +113,19 @@ export class MultitoolEngine {
     const n = this.count
     this.items.forEach((it, i) => {
       if (open) {
+        it.folding = false
         this.at(i * this.o.stagger, () => {
-          it.opacity.t = 1
+          it.retract.t = 0 // slides out of the button while it swings open
+          it.angle.c = OPEN_DAMPING // a little underdamped: the click into place
           it.angle.t = this.angleOf(i)
         })
       } else {
         const order = chosen === i ? n : n - 1 - i
         this.at(order * 0.04, () => {
+          // fold home without overshoot (no swing up past the button line), then slide into the handle
+          it.angle.c = 2 * Math.sqrt(it.angle.k)
           it.angle.t = 0
-          this.at(0.17, () => (it.opacity.t = 0))
+          it.folding = true
         })
       }
     })
@@ -159,9 +169,15 @@ export class MultitoolEngine {
       this.setHover(-1)
     }
     this.runDue()
-    let busy = this.queue.length > 0 || this.releaseAt >= 0
     for (const it of this.items) {
-      for (const s of [it.angle, it.opacity, it.lift, it.dim]) {
+      if (it.folding && Math.abs(it.angle.x) < 5) {
+        it.folding = false
+        it.retract.t = 1
+      }
+    }
+    let busy = this.queue.length > 0 || this.releaseAt >= 0 || this.items.some((it) => it.folding)
+    for (const it of this.items) {
+      for (const s of [it.angle, it.retract, it.lift, it.dim]) {
         if (this.o.reducedMotion) s.snap(s.t)
         else s.step(dt)
         if (!s.settled) busy = true
@@ -185,14 +201,15 @@ export class MultitoolEngine {
       this.time = Math.min(...this.queue.map((q) => q.at))
       this.runDue()
     }
-    for (const it of this.items) for (const s of [it.angle, it.opacity, it.lift, it.dim]) s.snap(s.t)
+    for (const it of this.items) if (it.folding) { it.folding = false; it.retract.t = 1 }
+    for (const it of this.items) for (const s of [it.angle, it.retract, it.lift, it.dim]) s.snap(s.t)
   }
 
   frame(i: number): ItemFrame {
     const it = this.items[i]
     return {
       angle: it.angle.x,
-      opacity: Math.min(1, Math.max(0, it.opacity.x)),
+      retract: Math.min(1, Math.max(0, it.retract.x)),
       lift: Math.min(1, Math.max(0, it.lift.x)),
       dim: Math.min(1, Math.max(0, it.dim.x)),
     }

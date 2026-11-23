@@ -27,6 +27,8 @@ export class MultitoolMenuElement extends HTMLElement {
   private layer: HTMLElement
   private plates: { a: HTMLAnchorElement; face: HTMLSpanElement; text: HTMLSpanElement }[] = []
   private engine = new MultitoolEngine({ count: 0 })
+  /** plate geometry from the last layout: height and how far a plate slides to vanish under the button */
+  private geo = { h: 38, len: 252, px: 0, slide: 0 }
   private raf = 0
   private last = 0
   private syncing = false
@@ -169,18 +171,13 @@ export class MultitoolMenuElement extends HTMLElement {
     const h = this.num("plate-height", 38)
     const room = this.side === "left" ? r.left + r.width / 2 - 12 : innerWidth - (r.left + r.width / 2) - 12
     const len = Math.max(h * 2, Math.min(this.num("length", 252), room))
+    // how far a plate slides along its length so its far end is tucked under the button
+    const b = this.btn.getBoundingClientRect()
+    const toButtonEdge = this.side === "left" ? r.left + r.width / 2 - b.left : b.right - (r.left + r.width / 2)
+    this.geo = { h, len, px, slide: Math.max(0, len - h / 2 - toButtonEdge + 2) }
     for (const { a } of this.plates) {
-      const s = a.style
-      s.width = `${len}px`
-      s.height = `${h}px`
-      s.top = `${py - h / 2}px`
-      if (this.side === "left") {
-        s.left = `${px - len + h / 2}px`
-        s.transformOrigin = `${len - h / 2}px ${h / 2}px`
-      } else {
-        s.left = `${px - h / 2}px`
-        s.transformOrigin = `${h / 2}px ${h / 2}px`
-      }
+      a.style.height = `${h}px`
+      a.style.top = `${py - h / 2}px`
     }
     this.render()
   }
@@ -265,13 +262,20 @@ export class MultitoolMenuElement extends HTMLElement {
     this.plates.forEach(({ a, face, text }, i) => {
       const f = this.engine.frame(i)
       // CSS rotation is clockwise: a plate pointing left swings down with a negative angle, one pointing right with a positive one
+      // closing: the plate folds home, then draws into the button through the rivet (and out again when opening).
+      // It shortens from its far end around the fixed pivot, so it never fades and never reaches past where it was.
+      const { h, len, px } = this.geo
+      const w = len - f.retract * this.geo.slide
+      a.style.width = `${w.toFixed(2)}px`
+      a.style.left = `${(dir < 0 ? px - w + h / 2 : px - h / 2).toFixed(2)}px`
+      a.style.transformOrigin = `${(dir < 0 ? w - h / 2 : h / 2).toFixed(2)}px ${h / 2}px`
       a.style.transform = `rotate(${(dir * f.angle).toFixed(3)}deg)`
       // visible from the moment it opens, so keyboard focus can land on a plate in the first frame
-      a.style.visibility = this.engine.isOpen || f.opacity > 0.002 ? "visible" : "hidden"
-      face.style.opacity = f.opacity.toFixed(3)
+      a.style.visibility = this.engine.isOpen || f.retract < 0.999 ? "visible" : "hidden"
       face.style.transform = `translate3d(${(dir * f.lift * LIFT_PX).toFixed(2)}px,0,0)`
       // the shadow is styled in CSS from --lift, so a theme can restyle it through ::part(face)
       face.style.setProperty("--lift", f.lift.toFixed(3))
+      face.style.setProperty("--tuck", f.retract.toFixed(3)) // its shadow goes into the handle with it
       text.style.opacity = (1 - f.dim * 0.55).toFixed(3)
     })
   }
