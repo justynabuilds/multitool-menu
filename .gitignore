@@ -5,3 +5,4 @@ site-dist
 .impeccable
 .DS_Store
 *.log
+/*.png
