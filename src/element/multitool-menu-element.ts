@@ -134,7 +134,9 @@ export class MultitoolMenuElement extends HTMLElement {
       a.style.zIndex = String(links.length - i)
       const face = document.createElement("span")
       face.className = "face"
+      face.setAttribute("part", "face")
       const text = document.createElement("span")
+      text.setAttribute("part", "label")
       text.textContent = (src.textContent || "").trim()
       face.append(text)
       a.append(face)
@@ -265,9 +267,8 @@ export class MultitoolMenuElement extends HTMLElement {
       a.style.visibility = this.engine.isOpen || f.opacity > 0.002 ? "visible" : "hidden"
       face.style.opacity = f.opacity.toFixed(3)
       face.style.transform = `translate3d(${(dir * f.lift * LIFT_PX).toFixed(2)}px,0,0)`
-      face.style.boxShadow =
-        `0 0 0 1px rgb(var(--mt-shadow) / .055), 0 1px 2px rgb(var(--mt-shadow) / .06), ` +
-        `0 ${(12 + f.lift * 6).toFixed(2)}px ${(24 + f.lift * 10).toFixed(2)}px -12px rgb(var(--mt-shadow) / ${(0.22 + f.lift * 0.08).toFixed(3)})`
+      // the shadow is styled in CSS from --lift, so a theme can restyle it through ::part(face)
+      face.style.setProperty("--lift", f.lift.toFixed(3))
       text.style.opacity = (1 - f.dim * 0.55).toFixed(3)
     })
   }

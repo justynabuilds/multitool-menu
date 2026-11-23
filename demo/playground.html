@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Multitool Menu Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="./site.css">
+<link rel="stylesheet" href="./playground.css">
+</head>
+<body>
+<div class="pg">
+  <section class="stage" aria-label="Preview">
+    <div class="stage-bar">
+      <span class="stage-title">Multitool Menu</span>
+      <span class="stage-w" id="stage-w"></span>
+    </div>
+    <div class="stage-canvas" id="canvas">
+      <div class="frame" id="frame">
+        <div class="site" id="pv">
+          <header class="nav">
+            <a class="mark" href="#" onclick="return false"><i></i>Alder</a>
+            <multitool-menu id="menu" label="Menu"></multitool-menu>
+          </header>
+          <main class="hero">
+            <div class="hero-copy">
+              <div class="eyebrow">Furniture workshop in Porto</div>
+              <h1 class="h">Furniture for small rooms. <span>Made to order in oak and folded steel.</span></h1>
+              <div class="actions">
+                <a class="cta" href="#contact" data-page="#contact">Start a commission</a>
+                <a class="link" href="#work" data-page="#work">See the work <span>→</span></a>
+              </div>
+            </div>
+            <div class="note"><b>Next opening: March 2027</b>Four commissions a season</div>
+          </main>
+        </div>
+      </div>
+    </div>
+    <div class="stage-foot">
+      <div class="code">
+        <div class="code-head">
+          <div class="seg seg-sm" role="tablist" id="code-tabs">
+            <button type="button" role="tab" aria-selected="true" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="react">React</button>
+          </div>
+          <button type="button" class="copy" id="copy">Copy</button>
+        </div>
+        <pre id="code"></pre>
+      </div>
+      <div class="events">
+        <span class="events-label">Events</span>
+        <ol id="events"><li class="empty">Open the menu or pick a page to see events</li></ol>
+      </div>
+    </div>
+  </section>
+  <aside class="panel" id="panel" aria-label="Properties"></aside>
+</div>
+<script type="module" src="./playground.ts"></script>
+</body>
+</html>

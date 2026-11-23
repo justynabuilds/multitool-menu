@@ -15,6 +15,8 @@ export interface MultitoolMenuProps {
   label?: string
   /** Controlled open state. Leave out to let the menu manage itself. */
   open?: boolean
+  /** "pearl" (default): white plates with a pearl rim. "ink": dark plates. "glass": frosted plates. */
+  finish?: "pearl" | "ink" | "glass"
   /** "left" (default) fans the plates out to the left, for a button on the right of the nav. */
   side?: "left" | "right"
   /** Plate length in px, measured from the rivet. Default 252. */
@@ -60,6 +62,7 @@ export function MultitoolMenu(props: MultitoolMenuProps) {
       class={props.className}
       style={props.style}
       label={props.label}
+      finish={props.finish}
       side={props.side}
       length={props.length}
       plate-height={props.plateHeight}
@@ -83,6 +86,7 @@ declare module "react" {
         class?: string
         style?: React.CSSProperties
         label?: string
+        finish?: string
         side?: string
         length?: number
         "plate-height"?: number

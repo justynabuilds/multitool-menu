@@ -9,15 +9,16 @@ src/core/engine.ts                     springs, timeline and hover rules, no DOM
 src/core/styles.ts                     shadow-root styles and the --mt-* theme hooks
 src/element/multitool-menu-element.ts  <multitool-menu> custom element
 src/react/MultitoolMenu.tsx            React adapter
-index.html, demo/                      demo site and the in-browser interaction self-test
+index.html, demo/                      demo site, props playground and the in-browser interaction self-test
 test/engine.test.ts                    unit tests (node --test)
 ```
 
 ## Commands
 
 ```
-npm run dev        demo at http://localhost:4175, self-test at /demo/selftest.html
+npm run dev        demo at http://localhost:4175, playground at /demo/playground.html, self-test at /demo/selftest.html
 npm run build      dist/multitool-menu.js (ESM), dist/multitool-menu.iife.js (script tag), dist/types
+npm run build:site the demo site Vercel serves (site-dist): / , /playground, /demo/selftest.html
 npm test           engine tests
 npm run typecheck
 ```
@@ -53,6 +54,7 @@ import { MultitoolMenu } from "@justbuilt/multitool-menu/react"
 | Attribute | Default | |
 | --- | --- | --- |
 | `label` | `Menu` | Button text. |
+| `finish` | `pearl` | `pearl`: white plates with a pearl rim and cool shadows. `ink`: dark plates out of a dark button. `glass`: frosted plates and button, best over photos. |
 | `side` | `left` | `left` fans the plates out to the left, for a button on the right of the nav. `right` mirrors it for a button on the left. |
 | `length` | `252` | Plate length in px from the rivet. Shortens itself when the screen is too narrow. |
 | `plate-height` | `38` | Plate height in px. |
@@ -75,15 +77,21 @@ Set these on the element or any parent:
 
 | Property | Default |
 | --- | --- |
-| `--mt-button-bg` | `#141416` |
+| `--mt-button-bg` | `#17171A` (the raised gradient and rings are derived from it) |
 | `--mt-button-text` | `#F5F5F3` |
-| `--mt-plate-bg` | `#FFFFFF` |
-| `--mt-plate-text` | `#141416` |
-| `--mt-shadow` | `20 20 22` (RGB channels used for every shadow) |
+| `--mt-plate-bg` | `#FFFFFF` (ink `#1C1C20`, glass translucent white) |
+| `--mt-plate-text` | `#141416` (ink `#F4F4F2`) |
+| `--mt-rim` | `#DADDE4` (pearl rim, bottom edge) |
+| `--mt-shadow` | `30 45 80` (RGB channels used for every shadow) |
+| `--mt-focus` | `#141416` (focus rings) |
 | `--mt-button-radius` | `14px` (squircle where the browser supports it) |
 | `--mt-font` | `inherit` |
 
-Parts for deeper styling: `::part(button)`, `::part(rivet)`, `::part(menu)`, `::part(item)`.
+Values you set win over the finish defaults. Parts for deeper styling: `::part(button)`, `::part(rivet)`, `::part(menu)`, `::part(item)`, `::part(face)`, `::part(label)`. A plate's face gets `--lift` (0 to 1 while hovered), so a custom shadow can grow with it.
+
+## Playground
+
+https://multitool-menu.vercel.app/playground: every prop in a panel (links, finish, colours, font, fan shape, screen size), a live preview, the event log, and copyable HTML and React code.
 
 ## Behaviour
 

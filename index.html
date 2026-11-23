@@ -2,44 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Multitool Menu</title>
+  <meta name="description" content="A nav menu whose links swing out from a rivet on the button, like blades on a pocket tool.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&display=swap">
-  <style>
-    :root{--ink:#141416;--muted:#77787C;--page:#FAFAF9;font-family:"Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--page);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100svh;overflow-x:hidden}
-    header{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:26px max(28px, env(safe-area-inset-right)) 0 max(32px, env(safe-area-inset-left))}
-    .mark{font-size:17px;font-weight:500;letter-spacing:-.01em;color:inherit;text-decoration:none}
-    main{min-height:calc(100svh - 66px);display:flex;align-items:flex-end;padding:0 32px 48px}
-    .hero{display:grid;gap:16px;transition:opacity .3s ease, transform .3s ease}
-    .hero.swap{opacity:0;transform:translateY(6px)}
-    h1{margin:0;font-weight:400;font-size:clamp(44px, 7.4vw, 96px);line-height:.98;letter-spacing:-.04em;max-width:8.6em;text-wrap:balance}
-    p{margin:0;font-size:16px;line-height:1.5;color:var(--muted);max-width:26em;text-wrap:pretty}
-    multitool-menu{--mt-font:inherit}
-    @media (max-width:640px){header{padding-left:20px;padding-right:18px}main{padding:0 20px 36px}}
-    @media (prefers-reduced-motion:reduce){.hero{transition:none}}
-  </style>
+  <link rel="stylesheet" href="/demo/site.css">
 </head>
-<body>
-  <header>
-    <a class="mark" href="#">Alder</a>
-    <multitool-menu label="Menu">
-      <a href="#work">Work</a>
-      <a href="#services">Services</a>
-      <a href="#about">About</a>
-      <a href="#journal">Journal</a>
-      <a href="#contact">Contact</a>
-    </multitool-menu>
-  </header>
-  <main>
-    <div class="hero" id="hero">
-      <h1 id="title">Furniture for small rooms.</h1>
-      <p id="lede">Solid oak and folded steel, made to order by a workshop of four.</p>
-    </div>
-  </main>
+<body class="alder">
+  <div class="site" id="site">
+    <header class="nav">
+      <a class="mark" href="/"><i></i>Alder</a>
+      <multitool-menu label="Menu">
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#journal">Journal</a>
+        <a href="#contact">Contact</a>
+      </multitool-menu>
+    </header>
+    <main class="hero">
+      <div class="hero-copy" id="copy">
+        <div class="eyebrow">Furniture workshop in Porto</div>
+        <h1 class="h" id="h">Furniture for small rooms. <span>Made to order in oak and folded steel.</span></h1>
+        <div class="actions">
+          <a class="cta" href="#contact" data-page="#contact">Start a commission</a>
+          <a class="link" href="#work" data-page="#work">See the work <span>→</span></a>
+        </div>
+      </div>
+      <div class="note"><b>Next opening: March 2027</b>Four commissions a season</div>
+    </main>
+  </div>
+  <a class="pg-link" href="/playground">Multitool Menu demo · Open the playground →</a>
   <script type="module" src="/demo/demo.ts"></script>
 </body>
 </html>

@@ -2,28 +2,37 @@ import "../src/element/index.ts"
 import type { MultitoolSelectDetail } from "../src/element/index.ts"
 
 // The demo swaps the hero instead of navigating, so the whole round trip can be tried on one page.
-const PAGES: Record<string, [string, string]> = {
-  "#work": ["Selected pieces, 2019 to now.", "Tables, shelving and a few chairs, each built for a particular room."],
-  "#services": ["Made to measure, start to finish.", "We draw it, build it in oak or steel, and fit it ourselves."],
+export const PAGES: Record<string, [string, string]> = {
+  "#work": ["Selected pieces, 2019 to now.", "Tables, shelving and chairs, each built for one room."],
+  "#services": ["Made to measure, start to finish.", "We draw it, build it and fit it ourselves."],
   "#about": ["A workshop of four.", "Two cabinetmakers, a welder and someone who answers the phone."],
-  "#journal": ["Notes from the bench.", "Joints, finishes and the occasional mistake, written up monthly."],
-  "#contact": ["Tell us about the room.", "Send a photo and rough measurements. We reply within two days."],
+  "#journal": ["Notes from the bench.", "Joints, finishes and the odd mistake, monthly."],
+  "#contact": ["Tell us about the room.", "Send a photo and rough sizes. We reply within two days."],
 }
 
-const menu = document.querySelector("multitool-menu")!
-const hero = document.getElementById("hero")!
-const title = document.getElementById("title")!
-const lede = document.getElementById("lede")!
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches
+/** Wires a demo site: picking a page in the menu (or a hero link) swaps the headline. */
+export function wireSite(scope: ParentNode) {
+  const menu = scope.querySelector("multitool-menu")!
+  const copy = scope.querySelector<HTMLElement>(".hero-copy")!
+  const h = scope.querySelector<HTMLElement>(".h")!
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches
+  const show = (href: string | null) => {
+    const page = href ? PAGES[href] : undefined
+    if (!page) return false
+    copy.classList.add("swap")
+    setTimeout(() => {
+      h.innerHTML = `${page[0]} <span>${page[1]}</span>`
+      copy.classList.remove("swap")
+    }, reduce ? 0 : 300)
+    return true
+  }
+  menu.addEventListener("select", (e) => {
+    if (show((e as CustomEvent<MultitoolSelectDetail>).detail.href)) e.preventDefault()
+  })
+  scope.querySelectorAll<HTMLAnchorElement>("[data-page]").forEach((a) =>
+    a.addEventListener("click", (e) => { if (show(a.dataset.page!)) e.preventDefault() }),
+  )
+  return menu
+}
 
-menu.addEventListener("select", (e) => {
-  const { href } = (e as CustomEvent<MultitoolSelectDetail>).detail
-  const page = href && PAGES[href]
-  if (!page) return
-  e.preventDefault()
-  hero.classList.add("swap")
-  setTimeout(() => {
-    ;[title.textContent, lede.textContent] = page
-    hero.classList.remove("swap")
-  }, reduce ? 0 : 300)
-})
+if (document.getElementById("site")) wireSite(document)
