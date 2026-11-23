@@ -95,6 +95,29 @@ async function run() {
   document.body.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true }))
   check("click outside closes", !menu.open)
 
+  // the nav rearranges: the button jumps to the left edge, then back to the right
+  const header = document.querySelector("header")!
+  header.style.justifyContent = "flex-start"
+  menu.open = true
+  await wait(1000)
+  const squeezed = parseFloat(plates()[0].style.width)
+  menu.open = false
+  await wait(800)
+  header.style.justifyContent = ""
+  menu.open = true
+  await wait(1000)
+  const back = parseFloat(plates()[0].style.width)
+  check("plates re-measure when the button moves", squeezed < 252 && back === 252, `${squeezed.toFixed(0)}px at the left edge, ${back}px back on the right`)
+  // what the playground did: a setting changes while the nav is still mid-rearrange, then the nav settles
+  header.style.justifyContent = "flex-start"
+  menu.setAttribute("spread", "14")
+  header.style.justifyContent = ""
+  await wait(150)
+  check("a setting change measures again after the page settles", parseFloat(plates()[0].style.width) === 252)
+  menu.removeAttribute("spread")
+  menu.open = false
+  await wait(800)
+
   out.textContent = `${results.join("\n")}\n\n${failed ? `${failed} failed` : `all ${results.length} passed`}`
   document.body.dataset.done = failed ? "fail" : "pass"
 }

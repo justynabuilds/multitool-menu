@@ -252,6 +252,8 @@ let lastLinks = ""
 
 function apply() {
   applying = true
+  // move the button first, so the menu measures its room from where it will sit
+  pv.classList.toggle("mirror", S.side === "right")
   const want = new Map(attrs())
   for (const k of KNOWN) {
     const v = want.get(k)
@@ -265,7 +267,6 @@ function apply() {
     lastLinks = sig
     menu.replaceChildren(...liveLinks().map((l) => Object.assign(document.createElement("a"), { href: l.href || "#", textContent: l.label })))
   }
-  pv.classList.toggle("mirror", S.side === "right")
   frame.style.width = S.device === "full" ? "100%" : `${S.device}px`
   if (menu.open !== S.open) menu.open = S.open
   applying = false

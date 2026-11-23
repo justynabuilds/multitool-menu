@@ -156,6 +156,8 @@ export class MultitoolMenuElement extends HTMLElement {
     }
     this.syncAria()
     this.layout()
+    // measure again once the page around the menu has finished updating (a nav that rearranges with the setting)
+    requestAnimationFrame(() => this.layout())
   }
 
   private layout() {
@@ -190,6 +192,7 @@ export class MultitoolMenuElement extends HTMLElement {
   private setOpen(open: boolean, chosen = -1, focusFirst = false) {
     this.engine.reducedMotion = this.motion.matches
     if (!this.engine.setOpen(open, chosen)) return
+    if (open) this.layout() // the button may have moved since the last measure
     this.syncing = true
     this.toggleAttribute("open", open)
     this.syncing = false
