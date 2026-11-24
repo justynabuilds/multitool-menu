@@ -32,6 +32,11 @@ const initial = () => ({
 const S = initial()
 type Key = keyof typeof S
 const MAX_LINKS = 8
+const FONT_LINKS: Record<string, string> = {
+  Geist: "https://fonts.googleapis.com/css2?family=Geist:wght@500&display=swap",
+  Inter: "https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap",
+  "Instrument Sans": "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500&display=swap",
+}
 /** Where the built script is served, so pasted HTML works anywhere. */
 const SCRIPT_URL = "https://multitool-menu.vercel.app/multitool-menu.iife.js"
 
@@ -291,11 +296,15 @@ function code(): string {
     // open the real page when the embed sits in its own frame (on a normal page it behaves like a plain link)
     const corner = S.side === "right" ? "flex-start" : "flex-end"
     const pad = S.side === "right" ? "16px 0 0 16px" : "16px 16px 0 0"
+    // an embed is a blank page, so it can't inherit the site's font: load the chosen one, or use the system sans
+    const fontLink = FONT_LINKS[S.font] ? [`<link rel="stylesheet" href="${FONT_LINKS[S.font]}">`] : []
+    const family = FONTS[S.font] || FONTS.System
     return [
+      ...fontLink,
       `<script src="${SCRIPT_URL}"></script>`,
       ``,
       `<!-- In an embed, give it room for the fan: about 320 × 320 -->`,
-      `<div style="display: flex; justify-content: ${corner}; padding: ${pad}">`,
+      `<div style="display: flex; justify-content: ${corner}; padding: ${pad}; font-family: ${family.replace(/"/g, "'")}">`,
       `  <multitool-menu${at}${style}>`,
       ...links.map((l) => `    <a href="${esc(l.href)}" target="_top">${escHTML(l.label)}</a>`),
       `  </multitool-menu>`,

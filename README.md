@@ -32,7 +32,7 @@ import { MultitoolMenu } from "@justbuilt/multitool-menu/react"
 />
 ```
 
-In an embed (Framer, Webflow), the menu lives in its own frame: give the embed room for the fan (about 320 × 320) and add `target="_top"` to the links so they open the real page. The [playground](https://multitool-menu.vercel.app/playground)'s HTML does both for you.
+In an embed (Framer, Webflow), the menu lives in its own frame: give the embed room for the fan (about 320 × 320), add `target="_top"` to the links so they open the real page, and set a font (an embed can't inherit your site's). The [playground](https://multitool-menu.vercel.app/playground)'s HTML does both for you.
 
 To host the script yourself, build it with `npm run build` (see [Development](#development)) and point the `src` at your copy; `multitool-menu.js` is the ES module version.
 
