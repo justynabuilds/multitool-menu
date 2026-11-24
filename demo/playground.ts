@@ -32,6 +32,8 @@ const initial = () => ({
 const S = initial()
 type Key = keyof typeof S
 const MAX_LINKS = 8
+/** Where the built script is served, so pasted HTML works anywhere. */
+const SCRIPT_URL = "https://multitool-menu.vercel.app/multitool-menu.iife.js"
 
 const FINISH_COLOURS: Record<string, Record<string, string>> = {
   pearl: { buttonBg: "#17171A", buttonText: "#F5F5F3", plateBg: "#FFFFFF", plateText: "#141416" },
@@ -284,7 +286,21 @@ function code(): string {
   if (tab === "html") {
     const at = a.map(([k, v]) => ` ${k}="${esc(v)}"`).join("")
     const style = st.length ? ` style="${st.map(([p, v]) => `${p}: ${v.replace(/"/g, "'")}`).join("; ")}"` : ""
-    return `<script src="multitool-menu.iife.js"></script>\n\n<multitool-menu${at}${style}>\n${links.map((l) => `  <a href="${esc(l.href)}">${escHTML(l.label)}</a>`).join("\n")}\n</multitool-menu>`
+    // ready to paste anywhere, including a Framer or Webflow embed: the script is served from the live demo,
+    // the wrapper keeps the button in its corner with room for the fan, and target="_top" makes links
+    // open the real page when the embed sits in its own frame (on a normal page it behaves like a plain link)
+    const corner = S.side === "right" ? "flex-start" : "flex-end"
+    const pad = S.side === "right" ? "16px 0 0 16px" : "16px 16px 0 0"
+    return [
+      `<script src="${SCRIPT_URL}"></script>`,
+      ``,
+      `<!-- In an embed, give it room for the fan: about 320 × 320 -->`,
+      `<div style="display: flex; justify-content: ${corner}; padding: ${pad}">`,
+      `  <multitool-menu${at}${style}>`,
+      ...links.map((l) => `    <a href="${esc(l.href)}" target="_top">${escHTML(l.label)}</a>`),
+      `  </multitool-menu>`,
+      `</div>`,
+    ].join("\n")
   }
   const p: string[] = [`items={[\n${links.map((l) => `    { label: ${JSON.stringify(l.label)}, href: ${JSON.stringify(l.href)} },`).join("\n")}\n  ]}`]
   if (S.label && S.label !== "Menu") p.push(`label=${JSON.stringify(S.label)}`)

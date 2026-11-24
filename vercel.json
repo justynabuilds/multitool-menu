@@ -9,5 +9,20 @@
       "source": "/playground",
       "destination": "/demo/playground.html"
     }
+  ],
+  "headers": [
+    {
+      "source": "/multitool-menu(.iife)?.js",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=600, must-revalidate"
+        }
+      ]
+    }
   ]
 }

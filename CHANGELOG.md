@@ -4,6 +4,8 @@ All notable changes to this project are listed here. Versions follow [semantic v
 
 ## Unreleased
 
+- The built script is served from the demo site (`https://multitool-menu.vercel.app/multitool-menu.iife.js`), so the playground's HTML works as pasted, including in Framer and Webflow embeds (corner wrapper with room for the fan, links open the real page).
+
 ## 0.1.0
 
 First version.

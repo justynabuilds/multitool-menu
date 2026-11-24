@@ -8,10 +8,10 @@ It ships as a plain web component that works on any site (Webflow embed, WordPre
 
 ## Quick start
 
-Any site. The links inside are ordinary `<a>` tags, so the menu still makes sense to search engines and without JavaScript:
+Any site, including a Framer or Webflow embed. The script is served from the live demo, so this works as pasted. The links inside are ordinary `<a>` tags, so the menu still makes sense to search engines and without JavaScript:
 
 ```html
-<script src="multitool-menu.iife.js"></script>
+<script src="https://multitool-menu.vercel.app/multitool-menu.iife.js"></script>
 <multitool-menu label="Menu">
   <a href="/work">Work</a>
   <a href="/services">Services</a>
@@ -32,7 +32,9 @@ import { MultitoolMenu } from "@justbuilt/multitool-menu/react"
 />
 ```
 
-Build the script yourself with `npm run build` (see [Development](#development)).
+In an embed (Framer, Webflow), the menu lives in its own frame: give the embed room for the fan (about 320 × 320) and add `target="_top"` to the links so they open the real page. The [playground](https://multitool-menu.vercel.app/playground)'s HTML does both for you.
+
+To host the script yourself, build it with `npm run build` (see [Development](#development)) and point the `src` at your copy; `multitool-menu.js` is the ES module version.
 
 ## Attributes
 
@@ -110,7 +112,7 @@ Requires Node 22.18 or newer (see `.nvmrc`) and npm.
 | `npm test` | Engine unit tests. |
 | `npm run typecheck` | TypeScript check. |
 | `npm run build` | `dist/multitool-menu.js` (ESM), `dist/multitool-menu.iife.js` (script tag) and `dist/types`. |
-| `npm run build:site` | The demo site Vercel serves (`site-dist`): `/`, `/playground`, `/demo/selftest.html`. |
+| `npm run build:site` | The demo site Vercel serves (`site-dist`): `/`, `/playground`, `/demo/selftest.html`, plus `/multitool-menu.iife.js` and `/multitool-menu.js` for embeds. |
 
 Typecheck, tests and build also run on GitHub for every push. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to make a change and [CHANGELOG.md](CHANGELOG.md) for what changed.
 
